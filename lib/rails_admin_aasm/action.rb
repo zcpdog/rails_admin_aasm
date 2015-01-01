@@ -30,7 +30,7 @@ module RailsAdmin
                 raise 'event disabled' if @state_machine_options.disabled?(params[:event].to_sym)
                 # if @object.send("fire_#{params[:attr]}_event".to_sym, params[:event].to_sym)
                 if @object.send("may_#{params[:event]}?".to_sym)
-                  @obj.send("#{params[:event]}!")
+                  @object.send("#{params[:event]}!")
                   flash[:success] = I18n.t('admin.state_machine.event_fired', attr: params[:method], event: params[:event])
                 else
                   flash[:error] = obj.errors.full_messages.join(', ')
