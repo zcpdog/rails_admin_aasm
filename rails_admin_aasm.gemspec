@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Chuanpin Zhu"]
   spec.email         = ["zcppku@gmail.com"]
   spec.description   = %q{Manage model's state with AASM and rails_admin}
-  spec.summary       = %q{Manage model's state with AASM and rails_admin}
+  spec.summary       = %q{Integrate aasm with rails_admin, add a new type into rails_admin, which is state}
   spec.homepage      = "https://github.com/zcpdog/rails_admin_aasm"
   spec.license       = "MIT"
 
@@ -18,9 +18,9 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "rails_admin"
-  spec.add_dependency "aasm"
+  spec.add_dependency "rails_admin", "~> 0"
+  spec.add_dependency "aasm", "~> 0"
 
   spec.add_development_dependency "bundler", "~> 1.3"
-  spec.add_development_dependency "rake"
+  spec.add_development_dependency "rake", "~> 0"
 end

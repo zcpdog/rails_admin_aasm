@@ -4,6 +4,9 @@
 Allows easily sending state_machine events to a model from Rails Admin, including support for
 ActiveRecord \ Mongoid and custom state field name and multiple state machines per model.
 
+Based on https://github.com/rs-pro/rails_admin_state.
+Since state_machine currently is not maintained, I turn to AASM https://github.com/aasm/aasm.
+
 ## Installing
 
 Add this line to your application's Gemfile:
@@ -70,15 +73,6 @@ Some classes are preset by default (published, deleted, etc)
 
 ### i18n (state and event names):
 
-Just as usual for state_machine, see:
-
-http://rdoc.info/github/pluginaweek/state_machine/master/StateMachine/Integrations/Mongoid
-
-http://rdoc.info/github/pluginaweek/state_machine/master/StateMachine/Integrations/ActiveRecord
-
-For namespaced models use "/", just as usual: "Blog::Post" is "blog/post"
-
-State name set this way is also used in .human_state_name, error messages, etc
 
 ## Contributing
 
