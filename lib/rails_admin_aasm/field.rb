@@ -21,6 +21,7 @@ module RailsAdmin
             ]
 
             bindings[:object].aasm.events.each do |event|
+              next unless event.may_fire? bindings[:object]
               next unless v.authorized?(:state, @abstract_model, bindings[:object]) && (v.authorized?(:all_events, @abstract_model, bindings[:object]) || v.authorized?(event.name, @abstract_model, bindings[:object]))
               event_class = @state_machine_options.event(event.name)
               ret << bindings[:view].link_to(
@@ -52,6 +53,7 @@ module RailsAdmin
 
             empty = true
             bindings[:object].aasm.events.each do |event|
+              next unless event.may_fire? bindings[:object]
               next unless v.authorized?(:state, @abstract_model, bindings[:object]) && (v.authorized?(:all_events, @abstract_model, bindings[:object]) || v.authorized?(event.name, @abstract_model, bindings[:object]))
               empty = false
               event_class = @state_machine_options.event(event.name)
