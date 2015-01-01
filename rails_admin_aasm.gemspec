@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["zcppku@gmail.com"]
   spec.description   = %q{Manage model's state with AASM and rails_admin}
   spec.summary       = %q{Manage model's state with AASM and rails_admin}
-  spec.homepage      = "https://github.com/rs-pro/rails_admin_state"
+  spec.homepage      = "https://github.com/zcpdog/rails_admin_aasm"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
