@@ -1,0 +1,11 @@
+ru:
+  admin:
+    actions:
+      toggle:
+        title: "Переключить"
+    state_machine:
+      event_fired: '%{attr} выполнено событие %{event}'
+      error: "Ошибка: %{err}"
+      no_id: "Не указан ID"
+      no_event: "Не менять"
+    

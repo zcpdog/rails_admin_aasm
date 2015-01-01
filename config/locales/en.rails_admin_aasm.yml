@@ -1,0 +1,10 @@
+en:
+  admin:
+    actions:
+      toggle:
+        title: "Toggle"
+    state_machine:
+      event_fired: '%{attr} event %{event} fired'
+      error: "Error: %{err}"
+      no_id: No ID provided
+      no_event: Don't change

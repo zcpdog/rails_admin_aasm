@@ -1,0 +1,14 @@
+.state-widget
+  = form.hidden_field field.method_name.to_s + '_event'
+  = field.form_value
+  :javascript
+    $(function() {
+      $('.state-btn').off('click').click(function(e){
+        e.preventDefault();
+        var $t = $(this), d = $t.data();
+        var $i = $t.parents('.state-widget').find('input')
+        $i.val(d.event);
+        $t.siblings().removeClass('active')
+        $t.addClass('active')
+      })
+    })
