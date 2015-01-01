@@ -15,9 +15,8 @@ module RailsAdmin
 
             state = bindings[:object].send(name)
             state_class = @state_machine_options.state(state)
-            s = bindings[:object].aasm.current_state
             ret = [
-              '<div class="label ' + state_class + '">' + s.name + '</div>',
+              '<div class="label ' + state_class + '">' + bindings[:object].aasm.human_state + '</div>',
               '<div style="height: 10px;"></div>'
             ]
 
@@ -46,9 +45,8 @@ module RailsAdmin
 
             state = bindings[:object].send(name)
             state_class = @state_machine_options.state(state)
-            s = bindings[:object].aasm.current_state
             ret = [
-              '<div class="label ' + state_class + '">' + s.human_state + '</div>',
+              '<div class="label ' + state_class + '">' + bindings[:object].aasm.human_state + '</div>',
               '<div style="height: 10px;"></div>'
             ]
 
