@@ -24,7 +24,7 @@ module RailsAdmin
               next unless v.authorized?(:state, @abstract_model, bindings[:object]) && (v.authorized?(:all_events, @abstract_model, bindings[:object]) || v.authorized?(event.name, @abstract_model, bindings[:object]))
               event_class = @state_machine_options.event(event.name)
               ret << bindings[:view].link_to(
-                event.human_state,
+                event.name.to_s.capitalize,
                 state_path(model_name: @abstract_model, id: bindings[:object].id, event: event.name, attr: name),
                 method: :post, 
                 class: "btn btn-mini #{event_class}",
@@ -56,7 +56,7 @@ module RailsAdmin
               empty = false
               event_class = @state_machine_options.event(event.name)
               ret << bindings[:view].link_to(
-                event.human_state,
+                event.name.to_s.capitalize,
                 '#',
                 'data-attr' => name,
                 'data-event' => event.name,
