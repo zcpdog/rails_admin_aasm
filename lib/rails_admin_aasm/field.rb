@@ -20,17 +20,23 @@ module RailsAdmin
               '<div style="height: 10px;"></div>'
             ]
 
-            bindings[:object].aasm.events.each do |event|
-              next unless event.may_fire? bindings[:object]
-              next unless v.authorized?(:state, @abstract_model, bindings[:object]) && (v.authorized?(:all_events, @abstract_model, bindings[:object]) || v.authorized?(event.name, @abstract_model, bindings[:object]))
-              event_class = @state_machine_options.event(event.name)
-              ret << bindings[:view].link_to(
-                event.name.to_s.capitalize,
-                state_path(model_name: @abstract_model, id: bindings[:object].id, event: event.name, attr: name),
-                method: :post, 
-                class: "btn btn-mini #{event_class}",
-                style: 'margin-bottom: 5px;'
-              )
+            unless read_only
+              bindings[:object].aasm.events.each do |event|
+                event = event.name
+                next if @state_machine_options.disabled?(event)
+                unless bindings[:controller].try(:authorization_adapter).nil? 
+                  adapter = bindings[:controller].authorization_adapter
+                  next unless (adapter.authorized?(:state, @abstract_model, bindings[:object]) && (adapter.authorized?(:all_events, @abstract_model, bindings[:object]) || adapter.authorized?(event, @abstract_model, bindings[:object])))
+                end
+                event_class = @state_machine_options.event(event)
+                ret << bindings[:view].link_to(
+                  event.to_s.humanize,
+                  state_path(model_name: @abstract_model, id: bindings[:object].id, event: event, attr: name),
+                  method: :post, 
+                  class: "btn btn-mini btn-xs #{event_class}",
+                  style: 'margin-bottom: 5px;'
+                )
+              end
             end
             ('<div style="white-space: normal;">' + ret.join(' ') + '</div>').html_safe
           end
@@ -52,27 +58,34 @@ module RailsAdmin
             ]
 
             empty = true
-            bindings[:object].aasm.events.each do |event|
-              next unless event.may_fire? bindings[:object]
-              next unless v.authorized?(:state, @abstract_model, bindings[:object]) && (v.authorized?(:all_events, @abstract_model, bindings[:object]) || v.authorized?(event.name, @abstract_model, bindings[:object]))
-              empty = false
-              event_class = @state_machine_options.event(event.name)
-              ret << bindings[:view].link_to(
-                event.name.to_s.capitalize,
-                '#',
-                'data-attr' => name,
-                'data-event' => event.name,
-                class: "state-btn btn btn-mini #{event_class}",
-                style: 'margin-bottom: 5px;'
-              )
+            unless read_only
+              bindings[:object].aasm.events.each do |event|
+                event = event.name
+                next if @state_machine_options.disabled?(event)
+                unless bindings[:controller].try(:authorization_adapter).nil? 
+                	adapter = bindings[:controller].authorization_adapter
+                	next unless (adapter.authorized?(:state, @abstract_model, bindings[:object]) && (adapter.authorized?(:all_events, @abstract_model, bindings[:object]) || adapter.authorized?(event, @abstract_model, bindings[:object])))
+                end
+                empty = false
+                event_class = @state_machine_options.event(event)
+                ret << bindings[:view].link_to(
+                  events[event].human_name,
+                  '#',
+                  'data-attr' => name,
+                  'data-event' => event,
+                  class: "state-btn btn btn-mini btn-xs #{event_class}",
+                  style: 'margin-bottom: 5px;'
+                )
+              end
             end
+            
             unless empty
               ret << bindings[:view].link_to(
                 I18n.t('admin.state_machine.no_event'),
                 '#',
                 'data-attr' => name,
                 'data-event' => '',
-                class: "state-btn btn btn-mini active",
+                class: "state-btn btn btn-default btn-mini btn-xs active",
                 style: 'margin-bottom: 5px;'
               )
             end
@@ -86,6 +99,10 @@ module RailsAdmin
 
           register_instance_option :partial do
             :form_state
+          end
+          
+          register_instance_option :read_only do
+            false
           end
 
           register_instance_option :allowed_methods do
