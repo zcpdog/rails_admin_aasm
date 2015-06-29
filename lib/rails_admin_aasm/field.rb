@@ -21,9 +21,8 @@ module RailsAdmin
             ]
 
             unless read_only
-              bindings[:object].aasm.events.each do |event|
-                event = event.name
-                next if @state_machine_options.disabled?(event)
+              bindings[:object].aasm.events.map(&:name).each do |event|
+                next if @state_machine_options.disabled?(event) || !bindings[:object].send("may_#{event}?")
                 unless bindings[:controller].try(:authorization_adapter).nil? 
                   adapter = bindings[:controller].authorization_adapter
                   next unless (adapter.authorized?(:state, @abstract_model, bindings[:object]) && (adapter.authorized?(:all_events, @abstract_model, bindings[:object]) || adapter.authorized?(event, @abstract_model, bindings[:object])))
@@ -59,9 +58,8 @@ module RailsAdmin
 
             empty = true
             unless read_only
-              bindings[:object].aasm.events.each do |event|
-                event = event.name
-                next if @state_machine_options.disabled?(event)
+              bindings[:object].aasm.events.map(&:name).each do |event|
+                next if @state_machine_options.disabled?(event) || !bindings[:object].send("may_#{event}?")
                 unless bindings[:controller].try(:authorization_adapter).nil? 
                 	adapter = bindings[:controller].authorization_adapter
                 	next unless (adapter.authorized?(:state, @abstract_model, bindings[:object]) && (adapter.authorized?(:all_events, @abstract_model, bindings[:object]) || adapter.authorized?(event, @abstract_model, bindings[:object])))
