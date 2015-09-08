@@ -67,7 +67,7 @@ module RailsAdmin
                 empty = false
                 event_class = @state_machine_options.event(event)
                 ret << bindings[:view].link_to(
-                  events[event].human_name,
+                  event.to_s.humanize,
                   '#',
                   'data-attr' => name,
                   'data-event' => event,
