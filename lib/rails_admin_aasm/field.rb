@@ -110,6 +110,16 @@ module RailsAdmin
           register_instance_option :multiple? do
             false
           end
+
+          register_instance_option :searchable_columns do
+            @searchable_columns ||= begin
+              if searchable
+                [{column: "#{abstract_model.table_name}.#{name}", type: :string}]
+              else
+                []
+              end
+            end
+          end
         end
       end
     end
