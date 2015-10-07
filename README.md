@@ -32,6 +32,17 @@ Add the state action:
       end
     end
 
+Add `attr_accessor` for temporary status variable:
+
+    class MyModel < ActiveRecord::Base
+      include AASM
+      enum status: %i(unknown canceled approved)
+      ...
+      # For changing status from admin panel.
+      attr_accessor event_status
+      ...
+    end
+
 Mark the field you need display as state:
 
     rails_admin do
@@ -63,7 +74,7 @@ Mark the field you need display as state:
     end
 
 Some classes are preset by default (published, deleted, etc)
-  
+
 ### CanCan integration
 
     cannot :manage, Recipes::Recipe
