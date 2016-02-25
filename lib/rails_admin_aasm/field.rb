@@ -16,14 +16,14 @@ module RailsAdmin
             state = bindings[:object].send(name)
             state_class = @state_machine_options.state(state)
             ret = [
-              '<div class="label ' + state_class + '">' + bindings[:object].aasm.human_state + '</div>',
+              '<div class="label ' + state_class + '">' + bindings[:object].aasm(state_machine_name).human_state + '</div>',
               '<div style="height: 10px;"></div>'
             ]
 
             unless read_only
-              bindings[:object].aasm.events.map(&:name).each do |event|
+              bindings[:object].aasm(state_machine_name).events.map(&:name).each do |event|
                 next if @state_machine_options.disabled?(event) || !bindings[:object].send("may_#{event}?")
-                unless bindings[:controller].try(:authorization_adapter).nil? 
+                unless bindings[:controller].try(:authorization_adapter).nil?
                   adapter = bindings[:controller].authorization_adapter
                   next unless (adapter.authorized?(:state, @abstract_model, bindings[:object]) && (adapter.authorized?(:all_events, @abstract_model, bindings[:object]) || adapter.authorized?(event, @abstract_model, bindings[:object])))
                 end
@@ -31,7 +31,7 @@ module RailsAdmin
                 ret << bindings[:view].link_to(
                   event.to_s.humanize,
                   state_path(model_name: @abstract_model, id: bindings[:object].id, event: event, attr: name),
-                  method: :post, 
+                  method: :post,
                   class: "btn btn-mini btn-xs #{event_class}",
                   style: 'margin-bottom: 5px;'
                 )
@@ -52,15 +52,15 @@ module RailsAdmin
             state = bindings[:object].send(name)
             state_class = @state_machine_options.state(state)
             ret = [
-              '<div class="label ' + state_class + '">' + bindings[:object].aasm.human_state + '</div>',
+              '<div class="label ' + state_class + '">' + bindings[:object].aasm(state_machine_name).human_state + '</div>',
               '<div style="height: 10px;"></div>'
             ]
 
             empty = true
             unless read_only
-              bindings[:object].aasm.events.map(&:name).each do |event|
+              bindings[:object].aasm(state_machine_name).events.map(&:name).each do |event|
                 next if @state_machine_options.disabled?(event) || !bindings[:object].send("may_#{event}?")
-                unless bindings[:controller].try(:authorization_adapter).nil? 
+                unless bindings[:controller].try(:authorization_adapter).nil?
                 	adapter = bindings[:controller].authorization_adapter
                 	next unless (adapter.authorized?(:state, @abstract_model, bindings[:object]) && (adapter.authorized?(:all_events, @abstract_model, bindings[:object]) || adapter.authorized?(event, @abstract_model, bindings[:object])))
                 end
@@ -76,7 +76,7 @@ module RailsAdmin
                 )
               end
             end
-            
+
             unless empty
               ret << bindings[:view].link_to(
                 I18n.t('admin.state_machine.no_event'),
@@ -89,16 +89,16 @@ module RailsAdmin
             end
             ('<div style="white-space: normal;">' + ret.join(' ') + '</div>').html_safe
           end
-          
+
           register_instance_option :export_value do
             state = bindings[:object].send(name)
-            bindings[:object].aasm.human_state
+            bindings[:object].aasm(state_machine_name).human_state
           end
 
           register_instance_option :partial do
             :form_state
           end
-          
+
           register_instance_option :read_only do
             false
           end
@@ -119,6 +119,10 @@ module RailsAdmin
                 []
               end
             end
+          end
+
+          register_instance_option :state_machine_name do
+            @state_machine_name || :default
           end
         end
       end
