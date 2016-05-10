@@ -29,7 +29,7 @@ module RailsAdmin
                 end
                 event_class = @state_machine_options.event(event)
                 ret << bindings[:view].link_to(
-                  event.to_s.humanize,
+                  bindings[:object].class.aasm.human_event_name(event),
                   state_path(model_name: @abstract_model, id: bindings[:object].id, event: event, attr: name),
                   method: :post,
                   class: "btn btn-mini btn-xs #{event_class}",
@@ -67,8 +67,9 @@ module RailsAdmin
                 empty = false
                 event_class = @state_machine_options.event(event)
                 ret << bindings[:view].link_to(
-                  event.to_s.humanize,
-                  '#',
+                  bindings[:object].class.aasm.human_event_name(event),
+                  state_path(model_name: @abstract_model, id: bindings[:object].id, event: event, attr: name),
+                  method: :post,
                   'data-attr' => name,
                   'data-event' => event,
                   class: "state-btn btn btn-mini btn-xs #{event_class}",
@@ -77,16 +78,6 @@ module RailsAdmin
               end
             end
 
-            unless empty
-              ret << bindings[:view].link_to(
-                I18n.t('admin.state_machine.no_event'),
-                '#',
-                'data-attr' => name,
-                'data-event' => '',
-                class: "state-btn btn btn-default btn-mini btn-xs active",
-                style: 'margin-bottom: 5px;'
-              )
-            end
             ('<div style="white-space: normal;">' + ret.join(' ') + '</div>').html_safe
           end
 

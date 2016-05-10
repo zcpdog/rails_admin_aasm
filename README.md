@@ -73,6 +73,25 @@ Some classes are preset by default (published, deleted, etc)
 
 ### i18n (state and event names):
 
+Events:
+
+```
+activerecord:
+    events:
+      product_order:
+        pay: 支付
+        refund: 同意退款
+        reject_refund: 拒绝退款
+```
+
+State:
+
+```
+product_order:
+    status/unpaid: 未支付 
+```
+
+notice the state must combine with `/`, see: [https://github.com/aasm/aasm/issues/38](https://github.com/aasm/aasm/issues/38)
 
 ## Contributing
 
