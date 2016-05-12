@@ -56,7 +56,6 @@ module RailsAdmin
               '<div style="height: 10px;"></div>'
             ]
 
-            empty = true
             unless read_only
               bindings[:object].aasm(state_machine_name).events.map(&:name).each do |event|
                 next if @state_machine_options.disabled?(event) || !bindings[:object].send("may_#{event}?")
@@ -64,7 +63,6 @@ module RailsAdmin
                 	adapter = bindings[:controller].authorization_adapter
                 	next unless (adapter.authorized?(:state, @abstract_model, bindings[:object]) && (adapter.authorized?(:all_events, @abstract_model, bindings[:object]) || adapter.authorized?(event, @abstract_model, bindings[:object])))
                 end
-                empty = false
                 event_class = @state_machine_options.event(event)
                 ret << bindings[:view].link_to(
                   bindings[:object].class.aasm.human_event_name(event),
