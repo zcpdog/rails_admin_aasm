@@ -111,7 +111,7 @@ module RailsAdmin
           end
 
           register_instance_option :state_machine_name do
-            @state_machine_name || :default
+            @state_machine_name || name
           end
         end
       end
