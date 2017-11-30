@@ -64,15 +64,19 @@ module RailsAdmin
                 	next unless (adapter.authorized?(:state, @abstract_model, bindings[:object]) && (adapter.authorized?(:all_events, @abstract_model, bindings[:object]) || adapter.authorized?(event, @abstract_model, bindings[:object])))
                 end
                 event_class = @state_machine_options.event(event)
-                ret << bindings[:view].link_to(
-                  bindings[:object].class.aasm.human_event_name(event),
-                  state_path(model_name: @abstract_model, id: bindings[:object].id, event: event, attr: name),
-                  method: :post,
-                  'data-attr' => name,
-                  'data-event' => event,
-                  class: "state-btn btn btn-mini btn-xs #{event_class}",
-                  style: 'margin-bottom: 5px;'
-                )
+                if bindings[:object].id.nil?
+                  ret
+                else
+                  ret << bindings[:view].link_to(
+                    bindings[:object].class.aasm.human_event_name(event),
+                    state_path(model_name: @abstract_model, id: bindings[:object].id, event: event, attr: name),
+                    method: :post,
+                    'data-attr' => name,
+                    'data-event' => event,
+                    class: "state-btn btn btn-mini btn-xs #{event_class}",
+                    style: 'margin-bottom: 5px;'
+                  )
+                end
               end
             end
 
