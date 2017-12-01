@@ -11,6 +11,7 @@ Since state_machine currently is not maintained, I turn to AASM https://github.c
 
 Add this line to your application's Gemfile:
 
+    #please use `0.1.1` if rails_admin <= `0.8.1`
     gem 'rails_admin_aasm'
 
 And then execute:
@@ -63,7 +64,7 @@ Mark the field you need display as state:
     end
 
 Some classes are preset by default (published, deleted, etc)
-  
+
 ### CanCan integration
 
     cannot :manage, Recipes::Recipe
@@ -88,7 +89,7 @@ State:
 
 ```
 product_order:
-    status/unpaid: 未支付 
+    status/unpaid: 未支付
 ```
 
 notice the state must combine with `/`, see: [https://github.com/aasm/aasm/issues/38](https://github.com/aasm/aasm/issues/38)
