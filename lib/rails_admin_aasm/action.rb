@@ -33,7 +33,7 @@ module RailsAdmin
                   @object.send("#{params[:event]}!")
                   flash[:success] = I18n.t('admin.state_machine.event_fired', attr: params[:method], event: params[:event])
                 else
-                  flash[:error] = obj.errors.full_messages.join(', ')
+                  flash[:error] = @object.errors.full_messages.join(', ')
                 end
               rescue Exception => e
                 Rails.logger.error e
